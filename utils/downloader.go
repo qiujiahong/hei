@@ -39,9 +39,7 @@ func PrintDownloadPercent(done chan int64, path string, total int64) {
 			}
 
 			var percent float64 = float64(size) / float64(total) * 100
-
-			fmt.Printf("%.0f", percent)
-			fmt.Println("%")
+			log.Printf("%.0f%%",percent)
 		}
 
 		if stop {
@@ -66,8 +64,6 @@ func DownloadFile(url string, dest string) bool {
 
 	var path bytes.Buffer
 	path.WriteString(dest)
-	path.WriteString("/")
-	path.WriteString(file)
 
 	start := time.Now()
 
