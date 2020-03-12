@@ -1,4 +1,4 @@
-package install
+package software
 
 type Item struct {
 	Tag string

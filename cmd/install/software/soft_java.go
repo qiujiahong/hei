@@ -1,8 +1,8 @@
-package install
+package software
 
-var softwareJava = SoftWare{
+var SoftwareJava = SoftWare{
 	Name: "java",
-	Versions:  []Item {
+	Versions:  []Item{
 		Item{
 			Tag : "1.8",
 			Url :"http",
