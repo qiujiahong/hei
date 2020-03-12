@@ -25,6 +25,7 @@ func  GetInstallerJava(p param.Parameters) InstallerJava {
 func (* InstallerJava) Handle(p param.Parameters) (bool, string) {
 	fmt.Println("Handle install java command.......",p.Args)
 	url :="https://mirrors.huaweicloud.com/java/jdk/8u202-b08/jdk-8u202-linux-x64.tar.gz"
-	utils.DownloadFile(url,"./")
+	download := utils.DownloadFile(url,"./")
+	fmt.Printf("download ........:%t\n" ,download)
 	return true,""
 }

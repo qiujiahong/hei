@@ -33,6 +33,7 @@ func ( installer * InstallerRedis) Handle(p param.Parameters) (bool, string) {
 		fmt.Printf("Can't find the software, something wrong.")
 	}
 
-	utils.DownloadFile(item.Url,item.FileName)
+	download := utils.DownloadFile(item.Url,item.FileName)
+	fmt.Printf("download ........:%t\n" ,download)
 	return true,""
 }
