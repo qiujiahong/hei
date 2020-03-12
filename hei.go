@@ -5,6 +5,9 @@ import (
 	"hei/param"
 )
 
+// 环境: PRO DEV
+var ENV="PRO"
+
 func main() {
 	//获取命令和参数
 	parameters := param.Parameters{}

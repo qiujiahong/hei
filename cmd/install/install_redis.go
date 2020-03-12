@@ -1,6 +1,7 @@
 package install
 
 import (
+	"encoding/json"
 	"fmt"
 	software2 "hei/cmd/install/software"
 	"hei/param"
@@ -20,11 +21,18 @@ func  GetInstallerRedis(p param.Parameters) InstallerRedis {
 
 func ( installer * InstallerRedis) Handle(p param.Parameters) (bool, string) {
 	installer.softWare = & software2.SoftwareRedis
+	var tag = ""
+	if len(p.Args) > 0{
+		tag = p.Args[0]
+	}
+    item, err := installer.softWare.GetItemByTag(tag)
+    if !err{
+		data, _ := json.Marshal(item)
+		fmt.Printf("software Info : %s\n",data)
+	}else {
+		fmt.Printf("Can't find the software, something wrong.")
+	}
 
-	fmt.Println(installer.softWare.Versions)
-
-	fmt.Println("Handle install redis command.......",p.Args)
-	url :="https://repo.huaweicloud.com/redis/redis-5.0.7.tar.gz"
-	utils.DownloadFile(url,"redis-5.0.7.tar.gz")
+	utils.DownloadFile(item.Url,item.FileName)
 	return true,""
 }
