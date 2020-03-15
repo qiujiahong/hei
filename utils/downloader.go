@@ -58,13 +58,13 @@ func PrintDownloadPercent(done chan int64, path string, total int64) {
 func DownloadFile(url string, dest string) bool {
 
 	if IsFileExist(dest) {
-		log.Printf("file \"%v\" already exist. ", dest)
+		log.Printf("compress \"%v\" already exist. ", dest)
 		return true
 	}
 
 	file := path.Base(url)
 
-	log.Printf("Downloading file %s from %s\n", file, url)
+	log.Printf("Downloading compress %s from %s\n", file, url)
 
 	var path bytes.Buffer
 	path.WriteString(dest)

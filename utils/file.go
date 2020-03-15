@@ -10,16 +10,16 @@ import (
 )
 
 // 解压文件
-// file -- 带解压的文件
+// compress -- 带解压的文件
 // dist -- 加压到目标路径,nill 代表当前路径"./"
-//func UnzipTarGz(file string, dist string) bool {
-//	fmt.Printf("unzip file : %v to %v \n", file, dist)
+//func UnzipTarGz(compress string, dist string) bool {
+//	fmt.Printf("unzip compress : %v to %v \n", compress, dist)
 //	err := os.MkdirAll(dist, os.ModePerm)
 //	if err != nil {
 //		panic(err)
 //	}
-//	// file read
-//	//fr, err := os.Open(file)
+//	// compress read
+//	//fr, err := os.Open(compress)
 //	//if err != nil {
 //	//	panic(err)
 //	//}
@@ -64,7 +64,7 @@ import (
 // srcFilePath -- 带解压的文件
 // destDirPath -- 加压到目标路径,nill 代表当前路径"./"
 func UnzipTarGz(srcFilePath string, destDirPath string) error {
-	fmt.Printf("unzip file : %v to %v \n", srcFilePath, destDirPath)
+	fmt.Printf("unzip compress : %v to %v \n", srcFilePath, destDirPath)
 	os.Mkdir(destDirPath, os.ModePerm)
 	fr, err := os.Open(srcFilePath)
 	if err != nil {
@@ -129,8 +129,14 @@ func IsFileExist(path string) bool {
 	return true
 }
 
-
-
+func DeleteFile(file string) bool  {
+	err := os.Remove(file)
+	if err != nil {  // 删除失败
+		return false
+	} else { // 删除成功
+		return true
+	}
+}
 
 //func MkdirAll(path string){
 //	//递归创建文件夹
