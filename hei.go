@@ -8,8 +8,9 @@ import (
 
 
 func main() {
+	//初始化
+	param.InitConfig()
 	//获取命令和参数
-	param.GetConfig()
 	parameters := param.Parameters{}
 	parameters.Read()
 	//执行参数

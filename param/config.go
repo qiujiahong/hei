@@ -8,26 +8,36 @@ import (
 type Config struct {
 	AppPath string
 	Env string
+	AppUser string
+	AppGroup string
 }
+//配置
+var gConfig = Config{}
 
-var GConfig = Config{}
-
-//获取配置文件
-func GetConfig() Config  {
+//初始化配置
+func InitConfig()  {
 	runMode := os.Getenv("RUN_MODE")
 	if runMode == "DEV"{
 		log.Println("Run in dev mode")
-		GConfig = Config{
+		gConfig = Config{
 			AppPath: "./install",
 			//PRO DEV
 			Env:     "DEV",
+			AppGroup: nil,
+			AppUser: nil,
 		}
 	}else  {
-		GConfig = Config{
+		gConfig = Config{
 			AppPath: "/apps/",
 			//PRO DEV
 			Env:     "PRO",
+			AppGroup: "appgroup",
+			AppUser: "appuser",
 		}
 	}
-	return GConfig
+}
+
+//获取配置
+func GetConfig() Config  {
+	return gConfig
 }
