@@ -1,59 +1,109 @@
 package utils
 
 import (
+	"archive/tar"
+	"compress/gzip"
 	"fmt"
+	"io"
 	"os"
+	"path"
 )
 
 // 解压文件
 // file -- 带解压的文件
 // dist -- 加压到目标路径,nill 代表当前路径"./"
-func UnzipTarGz(file string, dist string) bool {
-	fmt.Printf("unzip file : %v to %v \n", file, dist)
-	err := os.MkdirAll(dist, os.ModePerm)
+//func UnzipTarGz(file string, dist string) bool {
+//	fmt.Printf("unzip file : %v to %v \n", file, dist)
+//	err := os.MkdirAll(dist, os.ModePerm)
+//	if err != nil {
+//		panic(err)
+//	}
+//	// file read
+//	//fr, err := os.Open(file)
+//	//if err != nil {
+//	//	panic(err)
+//	//}
+//	//defer fr.Close()
+//	//// gzip read
+//	//gr, err := gzip.NewReader(fr)
+//	//if err != nil {
+//	//	panic(err)
+//	//}
+//	//defer gr.Close()
+//	//// tar read
+//	//tr := tar.NewReader(gr)
+//	//// 读取文件
+//	//for {
+//	//	h, err := tr.Next()
+//	//	if err == io.EOF {
+//	//		break
+//	//	}
+//	//	if err != nil {
+//	//		panic(err)
+//	//	}
+//	//	// 显示文件
+//	//	fmt.Println(h.Name)
+//	//	// 打开文件
+//	//	fw, err := os.OpenFile(dist + h.Name, os.O_CREATE | os.O_WRONLY, 0644/*os.FileMode(h.Mode)*/)
+//	//	if err != nil {
+//	//		panic(err)
+//	//	}
+//	//	defer fw.Close()
+//	//	// 写文件
+//	//	_, err = io.Copy(fw, tr)
+//	//	if err != nil {
+//	//		panic(err)
+//	//	}
+//	//}
+//	//fmt.Println("un tar.gz ok")
+//	return true
+//}
+
+
+// 解压文件
+// srcFilePath -- 带解压的文件
+// destDirPath -- 加压到目标路径,nill 代表当前路径"./"
+func UnzipTarGz(srcFilePath string, destDirPath string) error {
+	fmt.Printf("unzip file : %v to %v \n", srcFilePath, destDirPath)
+	os.Mkdir(destDirPath, os.ModePerm)
+	fr, err := os.Open(srcFilePath)
 	if err != nil {
-		panic(err)
+		return err
 	}
-	// file read
-	//fr, err := os.Open(file)
-	//if err != nil {
-	//	panic(err)
-	//}
-	//defer fr.Close()
-	//// gzip read
-	//gr, err := gzip.NewReader(fr)
-	//if err != nil {
-	//	panic(err)
-	//}
-	//defer gr.Close()
-	//// tar read
-	//tr := tar.NewReader(gr)
-	//// 读取文件
-	//for {
-	//	h, err := tr.Next()
-	//	if err == io.EOF {
-	//		break
-	//	}
-	//	if err != nil {
-	//		panic(err)
-	//	}
-	//	// 显示文件
-	//	fmt.Println(h.Name)
-	//	// 打开文件
-	//	fw, err := os.OpenFile(dist + h.Name, os.O_CREATE | os.O_WRONLY, 0644/*os.FileMode(h.Mode)*/)
-	//	if err != nil {
-	//		panic(err)
-	//	}
-	//	defer fw.Close()
-	//	// 写文件
-	//	_, err = io.Copy(fw, tr)
-	//	if err != nil {
-	//		panic(err)
-	//	}
-	//}
-	//fmt.Println("un tar.gz ok")
-	return true
+	defer fr.Close()
+
+
+	gr, err := gzip.NewReader(fr)
+	if err != nil {
+		return err
+	}
+	defer gr.Close()
+	tr := tar.NewReader(gr)
+
+
+	for {
+		hdr, err := tr.Next()
+		if err == io.EOF {
+			break
+		}
+
+
+		if hdr.Typeflag != tar.TypeDir {
+			os.MkdirAll(destDirPath+"/"+path.Dir(hdr.Name), os.ModePerm)
+			fw, _ := os.OpenFile(destDirPath+"/"+hdr.Name, os.O_CREATE|os.O_WRONLY, os.FileMode(hdr.Mode))
+			if err != nil {
+				return err
+			}
+			_, err = io.Copy(fw, tr)
+			if err != nil {
+				return err
+			}
+		}
+	}
+	return nil
 }
+
+
 
 // 移动文件夹
 // source  -- 源头
@@ -78,6 +128,9 @@ func IsFileExist(path string) bool {
 	}
 	return true
 }
+
+
+
 
 //func MkdirAll(path string){
 //	//递归创建文件夹

@@ -6,6 +6,7 @@ import (
 	software2 "hei/cmd/install/software"
 	"hei/param"
 	"hei/utils"
+	"log"
 )
 
 type InstallerRedis struct {
@@ -34,7 +35,7 @@ func (installer *InstallerRedis) Handle(p param.Parameters) (bool, string) {
 	}
 	//2.下载文件
 	download := utils.DownloadFile(item.Url, item.FileName)
-	fmt.Printf("download ........:%t\n", download)
+	log.Printf("download ........:%t\n", download)
 
 	//3.解压文件到目录
 	utils.UnzipTarGz(item.FileName, "./")
