@@ -6,38 +6,41 @@ import (
 )
 
 type Config struct {
+	//安装APP的路径
 	AppPath string
-	Env string
-	AppUser string
+	//
+	Env      string
+	AppUser  string
 	AppGroup string
 }
+
 //配置
 var gConfig = Config{}
 
 //初始化配置
-func InitConfig()  {
+func InitConfig() {
 	runMode := os.Getenv("RUN_MODE")
-	if runMode == "DEV"{
+	if runMode == "DEV" {
 		log.Println("Run in dev mode")
 		gConfig = Config{
 			AppPath: "./install",
 			//PRO DEV
-			Env:     "DEV",
-			AppGroup: nil,
-			AppUser: nil,
+			Env:      "DEV",
+			AppGroup: "",
+			AppUser:  "",
 		}
-	}else  {
+	} else {
 		gConfig = Config{
 			AppPath: "/apps/",
 			//PRO DEV
-			Env:     "PRO",
+			Env:      "PRO",
 			AppGroup: "appgroup",
-			AppUser: "appuser",
+			AppUser:  "appuser",
 		}
 	}
 }
 
 //获取配置
-func GetConfig() Config  {
+func GetConfig() Config {
 	return gConfig
 }

@@ -39,7 +39,7 @@ func PrintDownloadPercent(done chan int64, path string, total int64) {
 			}
 
 			var percent float64 = float64(size) / float64(total) * 100
-			log.Printf("%.0f%%",percent)
+			log.Printf("%.0f%%", percent)
 		}
 
 		if stop {
@@ -50,13 +50,17 @@ func PrintDownloadPercent(done chan int64, path string, total int64) {
 	}
 }
 
-
 /**
 	下载文件
 	url  -- 待下载文件的URL
     dest -- 存储文件的下载目录
- */
+*/
 func DownloadFile(url string, dest string) bool {
+
+	if IsFileExist(dest) {
+		log.Printf("file \"%v\" already exist. ", dest)
+		return true
+	}
 
 	file := path.Base(url)
 
